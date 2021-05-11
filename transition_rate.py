@@ -20,20 +20,12 @@ def trans_rate_exp(w0,w1,w):
 	y = w1**2/4/((w0-w)**2+w1**2/4)
 	return y
 
-def trans_rate(w0,w1):
-	w_list = np.arange(0.6,1.4,0.01)
-	rate = []
-	for wi in w_list:
-		w = wi
-		t, P_up,P_down,transition_rate = P_z(w0,w1,w,r0)
-		rate.append(transition_rate)
-	return w_list, rate
-
 
 r0 = [1.,0.,0.,0.]
 w0,w1 = 1.,0.1
 f0,f1= np.array([w0,w1])*800 #kHZ for plot title
-w_list,rate = trans_rate(w0,w1)
+w_list = np.arange(0.6,1.4,0.01)
+rate = np.array(list(map(lambda w: P_z(w0,w1,w,r0), w_list)))[:,3]
 
 fig= plt.figure(figsize=(15,13))
 ax = fig.add_subplot(111)
@@ -55,17 +47,17 @@ ax_w1 = fig.add_axes([0.3, 0.12, 0.4, 0.03])
 ax_w1.spines['top'].set_visible(True)
 ax_w1.spines['right'].set_visible(True)
 
-w0_slider = Slider(ax=ax_w0,label='$\omega_0$',valmin=0.,valmax=2.,valinit=1.0)
-w1_slider = Slider(ax=ax_w1,label='$\omega_1$',valmin=0.,valmax=2.,valinit=0.1)
+w0_slider = Slider(ax=ax_w0,label='$\omega_0$',valmin=0.,valmax=2.,valinit=1.0, facecolor='#cc7000')
+w1_slider = Slider(ax=ax_w1,label='$\omega_1$',valmin=0.,valmax=2.,valinit=0.1, facecolor='#cc7000')
 
 # Update values
 def update(val):
-    w0 = w0_slider.val
-    w1 = w1_slider.val
-    w_list,rate= trans_rate(w0,w1) 
-    transition_rate_line.set_data(w_list,rate)
-    exp_line.set_data(w_list, trans_rate_exp(w0,w1,w_list))
-    fig.canvas.draw_idle()
+	w0 = w0_slider.val
+	w1 = w1_slider.val
+	rate = np.array(list(map(lambda w: P_z(w0,w1,w,r0), w_list)))[:,3]
+	transition_rate_line.set_data(w_list,rate)
+	exp_line.set_data(w_list, trans_rate_exp(w0,w1,w_list))
+	fig.canvas.draw_idle()
 
 w0_slider.on_changed(update)
 w1_slider.on_changed(update)
