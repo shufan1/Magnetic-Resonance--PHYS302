@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 from matplotlib.widgets import Slider
-from magnetic_resonance import P_z, plot_prob, plot_transition_rate
+from magnetic_resonance import P_z
 
 hbar = 4.135667696*10**-15
 g = 2

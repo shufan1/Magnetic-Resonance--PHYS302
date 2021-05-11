@@ -3,8 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 from matplotlib.widgets import Slider
-from magnetic_resonance import P_z, plot_prob, plot_transition_rate
-
+from magnetic_resonance import P_z
 
 
 r0 = [1.,0.,0.,0.]
@@ -17,15 +16,15 @@ ax = fig.add_subplot(111)
 fig.subplots_adjust(bottom=0.3, top=0.8)
 # plot default solution
 P_zup_line, = ax.plot(t,P_down,label='Probability of spin up $| \langle -z | \psi \\rangle |^2$')
+
+
 ax.set_title('$f_0= %0.2f kHz$, $f_1 = %0.2f kHz$(applied field strength), $f = %0.2f kHz$(applied field frequency)'%(f0,f1,fap), fontsize=25)
-# ax.set_xlim(0,3*T1)
 ax.legend(loc='upper right', fontsize='xx-large')
 # ax.set_ylabel('$Probablity$ ')
 ax.set_xlabel('$t$')
-# ax.set_xticks(np.arange(0,3*T1,T1/2))
 ax.grid(True)
 transition_rate = np.max(P_down)
-# ax.annotate("Transition rate = %0.2f"%transition_rate, (0.72,0.67),xycoords = "figure fraction", fontsize = 20)
+ax.annotate("Transition rate = %0.2f"%transition_rate, (0.72,0.67),xycoords = "figure fraction", fontsize = 20)
 
 
 # Create axes for sliders
@@ -38,7 +37,7 @@ ax_w1.spines['right'].set_visible(True)
 ax_w = fig.add_axes([0.3, 0.05, 0.4, 0.03])
 ax_w.spines['top'].set_visible(True)
 ax_w.spines['right'].set_visible(True)
-
+# craet three sliders
 w0_slider = Slider(ax=ax_w0,label='$\omega_0$',valmin=0.,valmax=2.,valinit=1.0)
 w1_slider = Slider(ax=ax_w1,label='$\omega_1$',valmin=0.,valmax=2.,valinit=0.1)
 w_slider = Slider(ax=ax_w,label='$\omega$',valmin=0.,valmax=2.,valinit=1.0)
