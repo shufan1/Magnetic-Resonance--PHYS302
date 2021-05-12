@@ -15,7 +15,7 @@ fig= plt.figure(figsize=(15,7))
 ax = fig.add_subplot(111)
 fig.subplots_adjust(bottom=0.3, top=0.8)
 # plot default solution
-P_zup_line, = ax.plot(t,P_down,label='Probability of spin up $| \langle -z | \psi \\rangle |^2$')
+P_zdown_line, = ax.plot(t,P_down,label='Probability of spin up $| \langle -z | \psi \\rangle |^2$')
 
 
 ax.set_title('$f_0= %0.2f kHz$, $f_1 = %0.2f kHz$(applied field strength), $f = %0.2f kHz$(applied field frequency)'%(f0,f1,fap), fontsize=25)
@@ -49,7 +49,7 @@ def update(val):
     w1 = w1_slider.val
     w = w_slider.val
     t,zup,zdown,transition_rate = P_z(w0,w1,w,r0) 
-    P_zup_line.set_data(t, zdown)
+    P_zdown_line.set_data(t, zdown)
     fig.canvas.draw_idle()
 
 w0_slider.on_changed(update)
