@@ -146,6 +146,21 @@ plt.show()
 # ### varying the frequency of the oscillating field - transition rate
 
 # In[72]:
+# find P_up, P_down and transition rate
+def P_z2(w0,w1,w,r0,N):
+    T = 2*np.pi/(w1*w00) # make sure it complete one full cycle as we see that at resonance, the period of precession is 2pi/w1
+    t = np.linspace(0,1.1*T,N)
+    params = [w0,w1,w]
+#     t,aR,aI,bR,bI= RK_Solve(f,0,3*T1,1.,0.,0.,0.,5000, params =(w0,w1,w)) #solce by Runge Kutta
+    psoln = odeint(f, r0, t, args=(params,)) # solve by odeint
+    aR = psoln[:,0]
+    aI = psoln[:,1]
+    bR = psoln[:,2]
+    bI = psoln[:,3]
+    P_up = list(map(lambda r,i: abs(r+i*1j)**2,aR,aI))
+    P_down = list(map(lambda r,i: abs(r+i*1j)**2,bR,bI))
+    transition_rate = np.max(P_down)
+    return t,P_up,P_down,transition_rate
 
 ### expected transition_rate vs applied AC field frequency from Townsend Figure 4.6
 def trans_rate_exp(w0,w1,w):
@@ -159,7 +174,7 @@ Psi0 = [1.,0.,0.,0.] # at t=0, Psi = |+z>
 w0,w1 = 1.,0.1 # default value
 f0,f1= np.array([w0,w1])*800 #kHZ for plot title
 w_list = np.arange(0.4,1.4,0.005) # a list of applied frequency values 
-rate = np.array(list(map(lambda w: P_z(w0,w1,w,Psi0,600), w_list)))[:,3] # find the transition rate at each applied freq
+rate = np.array(list(map(lambda w: P_z2(w0,w1,w,Psi0,600), w_list)))[:,3] # find the transition rate at each applied freq
 
 fig= plt.figure(figsize=(15,13))
 ax = fig.add_subplot(111)
@@ -198,7 +213,7 @@ def update2(val):
     w0 = w0_slider.val
     w1 = w1_slider.val
     N = t_slider.val
-    rate = np.array(list(map(lambda w: P_z(w0,w1,w,Psi0,N), w_list)))[:,3] #calculate the transition rate under the new w and w1 values
+    rate = np.array(list(map(lambda w: P_z2(w0,w1,w,Psi0,N), w_list)))[:,3] #calculate the transition rate under the new w and w1 values
     transition_rate_line.set_data(w_list,rate)
     exp_line.set_data(w_list, trans_rate_exp(w0,w1,w_list))
 
