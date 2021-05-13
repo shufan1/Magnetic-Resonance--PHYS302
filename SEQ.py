@@ -168,7 +168,7 @@ transition_rate_line, = ax.plot(w_list,rate,label='Transition Probability from $
 exp_line, = ax.plot(w_list, trans_rate_exp(w0,w1,w_list),label="expectation")
 
 ax.legend(loc='upper right', fontsize='large')
-ax.set_xlabel('$\\frac{\omega}{\omega_0}$', fontsize=20)
+ax.set_xlabel('$\omega$', fontsize=20)
 ax.xaxis.set_label_coords(1.01, -0.01)
 ax.set_title('$f_0= %0.2f kHz$, $f_1 = %0.2f kHz$(applied field strength)'%(f0,f1), fontsize=20)
 ax.grid(True)
